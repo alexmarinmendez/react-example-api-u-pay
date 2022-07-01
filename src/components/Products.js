@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import Card from '../Card';
+import { db } from '../utils/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
-    await fetch('https://pg-delsur.herokuapp.com/products')
-      .then((response) => response.json())
-      .then((data) => setProducts(data.products))
-      .catch((error) => console.log('Hubo un problema con la petición Fetch:' + error.message));
+    const querySnapshot = await getDocs(collection(db, 'products'));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+    });
   }
 
   useEffect(() => {
-    // getProducts().then((data) => setProducts(data));
     getProducts();
   }, []);
 
