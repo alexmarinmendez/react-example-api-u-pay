@@ -9,6 +9,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/details/:idProduct" element={<Product />} />
+        <Route path="/categoria/:idCategory" element={<Products />} />
         <Route path="/" element={<Products />} />
       </Routes>
     </BrowserRouter>

@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { db } from '../utils/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const Product = () => {
   const [product, setProduct] = useState({});
   const { idProduct } = useParams();
 
-  async function getProductById() {
-    await fetch(`https://pg-delsur.herokuapp.com/products/${idProduct}`)
-      .then((response) => response.json())
-      .then((data) => setProduct(data))
-      .catch((error) => console.log('Hubo un problema con la petición Fetch:' + error.message));
+  async function getProductById(idProduct) {
+    const docRef = doc(db, 'products', idProduct);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      // console.log('Document data:', docSnap.data());
+      return {
+        id: idProduct,
+        ...docSnap.data(),
+      };
+    } else {
+      // doc.data() will be undefined in this case
+      console.log('No such document!');
+    }
   }
 
   useEffect(() => {
     // getProducts().then((data) => setProducts(data));
-    getProductById();
+    getProductById(idProduct)
+      .then((data) => setProduct(data))
+      .catch((err) => console.log(err));
   }, []);
 
   return (

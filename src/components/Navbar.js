@@ -12,6 +12,10 @@ export const Navbar = () => {
         <span>Vinos</span>
       </Link>
       |
+      <Link to="/categoria/9">
+        <span>Sin Alcohol</span>
+      </Link>
+      |
       <Link to="/categoria/2">
         <span>Espumantes</span>
       </Link>
